@@ -1,0 +1,44 @@
+.container {
+  padding: 30px;
+}
+
+.header-row {
+  background: #92949c;
+  color: #fff;
+  font-size: 18px;
+}
+
+ion-col {
+  border: 1px solid #eceeef;
+}
+
+.search-item {
+  width: 30%;
+  background-color: transparent;
+}
+
+.table-top {
+  display: flex;
+  justify-content: space-between;
+}
+
+.search-input {
+  border: 1px solid;
+  border-radius: 5px;
+}
+
+.box {
+  border-color: #403e39;
+  border-width: thin;
+  border-style: solid;
+  border-radius: 3px;
+  margin-bottom: 20px;
+}
+
+ion-item::part(native) {
+  background: transparent;
+}
+
+.form-item {
+  padding-bottom: 20px;
+}
