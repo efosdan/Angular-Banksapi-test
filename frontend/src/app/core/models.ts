@@ -1,5 +1,5 @@
 export type TransferItem = {
-  id: string;
+  id?: string;
   accountHolder: string;
   iban: string;
   date: string;

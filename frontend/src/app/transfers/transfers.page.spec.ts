@@ -131,4 +131,134 @@ describe('TransfersPage', () => {
 
     expect(component.submit).toHaveBeenCalledTimes(0);
   });
+
+  it('it should delete a transaction', () => {
+    spyOn(component, 'deleteTransferItem');
+    component.getData = () => [
+      {
+        accountHolder: 'Max Musterjunge',
+        iban: 'DE75512108001245126199',
+        amount: 730,
+        date: '2022-07-05T15:55:46.936Z',
+        note: 'A new transfer',
+        id: '7ae46136-dfab-4452-b361-03c2cd6e3541',
+      },
+    ];
+    fixture.detectChanges();
+    const deleteBtn = fixture.debugElement.query(
+      By.css('#deletebtn')
+    ).nativeElement;
+    deleteBtn.click();
+    fixture.detectChanges();
+    expect(component.deleteTransferItem).toHaveBeenCalledTimes(1);
+    expect(component.deleteTransferItem).toHaveBeenCalledOnceWith(
+      '7ae46136-dfab-4452-b361-03c2cd6e3541'
+    );
+  });
+
+  it('it should edit a transfer', () => {
+    spyOn(component, 'editTransfer');
+    component.getData = () => [
+      {
+        accountHolder: 'Max Musterjunge',
+        iban: 'DE75512108001245126199',
+        amount: 730,
+        date: '2022-07-05T15:55:46.936Z',
+        note: 'A new transfer',
+        id: '7ae46136-dfab-4452-b361-03c2cd6e3541',
+      },
+    ];
+    fixture.detectChanges();
+    const editBtn = fixture.debugElement.query(
+      By.css('#editbtn')
+    ).nativeElement;
+    editBtn.click();
+    expect(component.editTransfer).toHaveBeenCalledTimes(1);
+  });
+
+  it('should edit a transfer', () => {
+    const data = {
+      accountHolder: 'Max Musterjunge',
+      iban: 'DE75512108001245126199',
+      amount: 730,
+      date: '2022-07-05T15:55:46.936Z',
+      note: 'A new transfer',
+      id: '7ae46136-dfab-4452-b361-03c2cd6e3541',
+    };
+    component.editTransfer(data);
+    expect(component.item).toBe(data);
+  });
+
+  it('should reset form', () => {
+    const data = {
+      accountHolder: 'Max Musterjunge',
+      iban: 'DE75512108001245126199',
+      amount: 730,
+      date: '2022-07-05T15:55:46.936Z',
+      note: 'A new transfer',
+      id: '7ae46136-dfab-4452-b361-03c2cd6e3541',
+    };
+    component.editTransfer(data);
+    expect(component.item).toBe(data);
+    component.resetForm();
+    expect(component.item).toBe(null);
+  });
+
+  it('should format error message when item is required', () => {
+    const result = component.formatErrorMessage('accountHolder', {
+      required: true,
+    });
+    expect(result).toBe('accountHolder is required');
+  });
+
+  it('should format error message when invalid iban is passed', () => {
+    const result = component.formatErrorMessage('iban', {
+      iban: true,
+    });
+    expect(result).toBe('invalid IBAN');
+  });
+
+  it('should format error message when minimum value is lesser than 50', () => {
+    const result = component.formatErrorMessage('amount', {
+      min: { min: 50 },
+    });
+    expect(result).toBe('amount must be at least 50');
+  });
+
+  it('should format error message when maximum value is greater than 20000000', () => {
+    const result = component.formatErrorMessage('amount', {
+      max: { max: 20000000 },
+    });
+    expect(result).toBe('amount must not be greater than 20000000');
+  });
+
+  it('should get and sort data accordling', () => {
+    component.transferItems = [
+      {
+        accountHolder: 'Max Musterjunge',
+        iban: 'DE75512108001245126199',
+        amount: 500,
+        date: '2022-07-05T15:55:46.936Z',
+        note: 'A new transfer',
+        id: '7ae46136-dfab-4452-b361-03c2cd6e3541',
+      },
+      {
+        accountHolder: 'Efosa Daniel',
+        iban: 'DE75512108001245126199',
+        amount: 100,
+        date: '2022-07-01T15:55:46.936Z',
+        note: 'A new transfer',
+        id: '048a4a03-18ff-4ed4-a239-f6b5bc82b72f',
+      },
+    ];
+    const result = component.getData();
+    expect(result[0]).toEqual({
+      accountHolder: 'Efosa Daniel',
+      iban: 'DE75512108001245126199',
+      amount: 100,
+      date: '2022-07-01T15:55:46.936Z',
+      note: 'A new transfer',
+      id: '048a4a03-18ff-4ed4-a239-f6b5bc82b72f',
+    });
+  });
 });

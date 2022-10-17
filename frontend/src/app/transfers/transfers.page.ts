@@ -26,6 +26,7 @@ export class TransfersPage {
   search = '';
   isModalOpen = false;
   item = null;
+  public transferItems = [];
   public ibanReactive: FormControl;
   private transferForm: FormGroup;
 
@@ -34,6 +35,9 @@ export class TransfersPage {
     private store: Store,
     updates$: Actions
   ) {
+    this.store.select(selectTransferItems).subscribe((transfers) => {
+      this.transferItems = transfers;
+    });
     this.transferForm = this.formBuilder.group({
       accountHolder: ['', Validators.required],
       amount: [
@@ -65,11 +69,7 @@ export class TransfersPage {
   }
 
   getData() {
-    let transferItems = [];
-    this.store.select(selectTransferItems).subscribe((transfers) => {
-      transferItems = transfers;
-    });
-    return [...transferItems]
+    return [...this.transferItems]
       .filter(
         (item) =>
           item.accountHolder

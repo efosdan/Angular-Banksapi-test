@@ -48,7 +48,7 @@
       </ion-col>
     </ion-row>
 
-    <ion-row *ngFor="let item of getData() ;">
+    <ion-row *ngFor="let item of getData() ;" id="item">
       <ion-col>
         <ion-text> {{ item.accountHolder}}</ion-text>
       </ion-col>
@@ -71,6 +71,7 @@
 
       <ion-col>
         <ion-button
+          id="editbtn"
           fill="outline"
           size="small"
           color="primary"
@@ -78,6 +79,7 @@
           >Edit</ion-button
         >
         <ion-button
+          id="deletebtn"
           fill="outline"
           size="small"
           color="danger"
